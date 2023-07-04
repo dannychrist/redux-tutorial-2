@@ -26,9 +26,9 @@ const Counter = () => {
       />
       <div>
         <button onClick={() => dispatch(incrementByAmount(Number(amount)))}>
-          Submit
+          Add Amount
         </button>
-        <button onClick={resetAll}></button>
+        <button onClick={resetAll}>Reset All</button>
       </div>
     </section>
   );
