@@ -38,14 +38,20 @@ export const postsSlice = createSlice({
       reducer: (state, action) => {
         state.unshift(action.payload);
       },
-      prepare: (title, content, reactions, userId) => {
+      prepare: (title, content, userId) => {
         return {
           payload: {
             id: nanoid(),
             title,
             content,
             date: new Date().toISOString(),
-            reactions,
+            reactions: {
+              thumbsUp: 0,
+              wow: 0,
+              heart: 0,
+              rocket: 0,
+              coffee: 0,
+            },
             userId,
           },
         };
@@ -63,7 +69,7 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 
 export const selectAllPosts = (state) => state.posts;
 
