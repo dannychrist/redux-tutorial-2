@@ -34,31 +34,23 @@ const EditPostForm = () => {
   const canSave =
     [title, content, userId].every(Boolean) && requestStatus === 'idle';
 
-  const onSavePostClicked = () => {
-    if (canSave) {
-      try {
-        setRequestStatus('pending');
-        dispatch(
-          updatePost({
-            id: post.id,
-            title,
-            body: content,
-            userId,
-            reactions: post.reactions,
-          })
-        ).unwrap();
+    const onSavePostClicked = () => {
+      if (canSave) {
+          try {
+              setRequestStatus('pending')
+              dispatch(updatePost({ id: post.id, title, body: content, userId, reactions: post.reactions })).unwrap()
 
-        setTitle('');
-        setContent('');
-        setUserId('');
-        navigate(`/post/${postId}`);
-      } catch (err) {
-        console.error('Failed to save the post', err);
-      } finally {
-        setRequestStatus('idle');
+              setTitle('')
+              setContent('')
+              setUserId('')
+              navigate(`/post/${postId}`)
+          } catch (err) {
+              console.error('Failed to save the post', err)
+          } finally {
+              setRequestStatus('idle')
+          }
       }
-    }
-  };
+  }
 
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
@@ -84,7 +76,8 @@ const EditPostForm = () => {
           defaultValue={userId}
           onChange={onAuthorChanged}
         >
-          <option value=''>{usersOptions}</option>
+          <option value=''></option>
+          {usersOptions}
         </select>
 
         <label htmlFor='postContent'>Content:</label>
