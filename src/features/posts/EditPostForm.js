@@ -29,7 +29,7 @@ const EditPostForm = () => {
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
-  const onAuthorChanged = (e) => setUserId(e.target.value);
+  const onAuthorChanged = (e) => setUserId(Number(e.target.value));
 
   const canSave =
     [title, content, userId].every(Boolean) && requestStatus === 'idle';
@@ -118,7 +118,11 @@ const EditPostForm = () => {
         <button type='button' onClick={onSavePostClicked} disabled={!canSave}>
           Save Post
         </button>
-        <button type='button' onClick={onDeletePostClicked}>
+        <button
+          className='deleteButton'
+          type='button'
+          onClick={onDeletePostClicked}
+        >
           Delete Post
         </button>
       </form>
