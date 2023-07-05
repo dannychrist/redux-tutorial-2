@@ -47,6 +47,11 @@ const EditPostForm = () => {
             reactions: post.reactions,
           })
         ).unwrap();
+
+        setTitle('');
+        setContent('');
+        setUserId('');
+        navigate(`/post/${postId}`);
       } catch (err) {
         console.error('Failed to save the post', err);
       } finally {
