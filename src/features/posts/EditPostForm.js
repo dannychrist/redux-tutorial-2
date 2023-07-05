@@ -17,8 +17,44 @@ const EditPostForm = () => {
   const [userId, setUserId] = useState(post?.userId);
   const [requestStatus, setRequestStatus] = useState('idle');
 
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+
+  if (!post) {
+    return (
+      <section>
+        <h2>Post not found!</h2>
+      </section>
+    );
+  }
+
+  const onTitleChanged = (e) => setTitle(e.target.value);
+  const onContentChanged = (e) => setContent(e.target.value);
+  const onAuthorChanged = (e) => setUserId(e.target.value);
+
+  const canSave =
+    [title, content, userId].every(Boolean) && requestStatus === 'idle';
+
+  const onSavePostClicked = () => {
+    if (canSave) {
+      try {
+        setRequestStatus('pending');
+        dispatch(
+          updatePost({
+            id: post.id,
+            title,
+            body: content,
+            userId,
+            reactions: post.reactions,
+          })
+        ).unwrap();
+      } catch (err) {
+        console.error('Failed to save the post', err);
+      } finally {
+        setRequestStatus('idle');
+      }
+    }
+  };
+
   return <div>EditPostForm</div>;
 };
 export default EditPostForm;
