@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPostById, updatePost } from './postsSlice';
+import { selectPostById, updatePost, deletePost } from './postsSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { selectAllUsers } from '../users/usersSlice';
@@ -34,23 +34,51 @@ const EditPostForm = () => {
   const canSave =
     [title, content, userId].every(Boolean) && requestStatus === 'idle';
 
-    const onSavePostClicked = () => {
-      if (canSave) {
-          try {
-              setRequestStatus('pending')
-              dispatch(updatePost({ id: post.id, title, body: content, userId, reactions: post.reactions })).unwrap()
+  const onSavePostClicked = () => {
+    if (canSave) {
+      try {
+        setRequestStatus('pending');
+        dispatch(
+          updatePost({
+            id: post.id,
+            title,
+            body: content,
+            userId,
+            reactions: post.reactions,
+          })
+        ).unwrap();
 
-              setTitle('')
-              setContent('')
-              setUserId('')
-              navigate(`/post/${postId}`)
-          } catch (err) {
-              console.error('Failed to save the post', err)
-          } finally {
-              setRequestStatus('idle')
-          }
+        setTitle('');
+        setContent('');
+        setUserId('');
+        navigate(`/post/${postId}`);
+      } catch (err) {
+        console.error('Failed to save the post', err);
+      } finally {
+        setRequestStatus('idle');
       }
-  }
+    }
+  };
+
+  const onDeletePostClicked = () => {
+    try {
+      setRequestStatus('pending');
+      dispatch(
+        deletePost({
+          id: post.id,
+        })
+      ).unwrap();
+
+      setTitle('');
+      setContent('');
+      setUserId('');
+      navigate('/');
+    } catch (err) {
+      console.error('Failed to delete', err);
+    } finally {
+      setRequestStatus('idle');
+    }
+  };
 
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
@@ -89,6 +117,9 @@ const EditPostForm = () => {
         />
         <button type='button' onClick={onSavePostClicked} disabled={!canSave}>
           Save Post
+        </button>
+        <button type='button' onClick={onDeletePostClicked}>
+          Delete Post
         </button>
       </form>
     </section>
