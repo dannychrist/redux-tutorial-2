@@ -162,4 +162,4 @@ export const selectPostById = (state, postId) =>
 
 export const { postAdded, reactionAdded } = postsSlice.actions;
 
-export default postsSlice.reducer
+export default postsSlice.reducer;
