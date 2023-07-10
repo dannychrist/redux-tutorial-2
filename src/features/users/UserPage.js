@@ -9,6 +9,7 @@ const UserPage = () => {
 
   const postsForUser = useSelector((state) => {
     const allPosts = selectAllPosts(state);
+    return allPosts.filter((post) => post.userId === Number(userId));
   });
 
   const postTitles = postsForUser.map((post) => (
