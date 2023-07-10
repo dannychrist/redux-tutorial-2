@@ -8,6 +8,7 @@ const initialState = {
   posts: [],
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
+  count: 0,
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
@@ -55,29 +56,29 @@ export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: {
-      reducer: (state, action) => {
-        state.posts.push(action.payload);
-      },
-      prepare: (title, content, userId) => {
-        return {
-          payload: {
-            id: nanoid(),
-            title,
-            content,
-            date: new Date().toISOString(),
-            reactions: {
-              thumbsUp: 0,
-              wow: 0,
-              heart: 0,
-              rocket: 0,
-              coffee: 0,
-            },
-            userId,
-          },
-        };
-      },
-    },
+    // postAdded: {
+    //   reducer: (state, action) => {
+    //     state.posts.push(action.payload);
+    //   },
+    //   prepare: (title, content, userId) => {
+    //     return {
+    //       payload: {
+    //         id: nanoid(),
+    //         title,
+    //         content,
+    //         date: new Date().toISOString(),
+    //         reactions: {
+    //           thumbsUp: 0,
+    //           wow: 0,
+    //           heart: 0,
+    //           rocket: 0,
+    //           coffee: 0,
+    //         },
+    //         userId,
+    //       },
+    //     };
+    //   },
+    // },
     reactionAdded: {
       reducer: (state, action) => {
         const { postId, reaction } = action.payload;
@@ -85,6 +86,11 @@ export const postsSlice = createSlice({
         if (existingPost) {
           existingPost.reactions[reaction]++;
         }
+      },
+    },
+    increaseCount: {
+      reducer: (state, action) => {
+        state.count = state.count + 1;
       },
     },
   },
